@@ -2,9 +2,14 @@
  * Name: Matthew Acosta
  * Class ID: 302
  * Description: The calculator class defines the calculator object,
- * which starts with a total value of zero, and its methods allow
- * a user to add, subtract, multiply, or divide the total by input
- * values. The getHistory() method returns the 
+ * which starts with a total value of zero. The seqLength
+ * instance variable tracks the number of operations entered into the
+ * calculator. The 2-Dimensional array, sequence, stores both the
+ * value and operation used.
+ * The classes methods allow a user to add, subtract,
+ *  multiply, or divide the total by input values. 
+ *  The getHistory() method allows the user to view the sequence
+ *  of inputs and values inputed.
  */
 
 package cse360assign2;
@@ -12,13 +17,17 @@ package cse360assign2;
 public class Calculator {
 
 	private int total;
+	private int seqLength;
+	private int[][] sequence;
 	
 	/**
 	 * Constructor of the calculator class. Takes no parameters,
 	 * and initializes the calculator's total to 0
 	 */
 	public Calculator () {
-		total = 0;  // not needed - included for clarity
+		total = 0;  
+		seqLength = 0;
+		sequence = new int[2][100];
 	}
 	
 	/**
@@ -37,6 +46,9 @@ public class Calculator {
 	 */
 	public void add (int value) {
 		total += value;
+		sequence[0][seqLength] = 0;
+		sequence[1][seqLength] = value;
+		seqLength++;
 	}
 	
 	/**
@@ -46,6 +58,9 @@ public class Calculator {
 	 */
 	public void subtract (int value) {
 		total -= value;
+		sequence[0][seqLength] = 1;
+		sequence[1][seqLength] = value;
+		seqLength++;
 	}
 	
 	/**
@@ -55,6 +70,9 @@ public class Calculator {
 	 */
 	public void multiply (int value) {
 		total *= value;
+		sequence[0][seqLength] = 2;
+		sequence[1][seqLength] = value;
+		seqLength++;
 	}
 	/**
 	 * divides total by parameter value
@@ -63,6 +81,9 @@ public class Calculator {
 	 */
 	public void divide (int value) {
 		total /= value;
+		sequence[0][seqLength] = 3;
+		sequence[1][seqLength] = value;
+		seqLength++;
 	}
 	
 	/**
@@ -72,6 +93,26 @@ public class Calculator {
 	 * @return	string of operations and values w/ updated total
 	 */
 	public String getHistory () {
-		return "";
+		String seq = "0 ";
+		for(int i = 0; i < seqLength; i++){
+			switch(sequence[0][i]){
+				case 0:
+					seq += "+ " + sequence[1][i] + " ";
+					break;
+				case 1:
+					seq += "- " + sequence[1][i] + " ";
+					break;
+				case 2:
+					seq += "* " + sequence[1][i] + " ";
+					break;
+				case 3:
+					seq += "/ " + sequence[1][i] + " ";
+					break;
+				default:
+					break;
+			}
+		}
+		seq += "= " + total;
+		return seq;
 	}
 }
